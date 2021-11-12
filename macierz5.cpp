@@ -2,9 +2,12 @@
 #include <locale.h>
 #include <fstream>
 #include <string>
+#include <chrono>
+#include <time.h>
+#include <windows.h>
 
-
-int n=0, m=0, i=0, j=0, p=0,k=0,q=0,y=0,zli=0,k2=0,zli2=0,q2=0,n2=0,m2=0,wybor=0;
+int n=0, m=0, i=0, j=0, p=0,k=0,q=0,y=0,zli=0,k2=0,zli2=0,q2=0,n2=0,m2=0,wybor=0,wybor2=0;
+float czas;
 
 using namespace std;
 
@@ -12,6 +15,7 @@ using namespace std;
 void obliczanie(int m, int n,int * A = new int[p], int * B = new int[p], int * B2 = new int[p])
 
     {
+
 
     ofstream plik;
     plik.open("kolumny.txt");// tworzy i otwiera plik kolumny
@@ -28,7 +32,7 @@ void obliczanie(int m, int n,int * A = new int[p], int * B = new int[p], int * B
 
         for(j = k; j <= m ; j++)
         {
-            zli = zli + A[i+y*k];           //zliczanie sumy n pierwszych element贸w n kolumny
+            zli = zli + A[i+y*k];           //zliczanie sumy n pierwszych element體 n kolumny
             y++;
         }
         B[q]=zli;
@@ -44,7 +48,7 @@ void obliczanie(int m, int n,int * A = new int[p], int * B = new int[p], int * B
 
             for(j = 0; j < k2-1 ; j++)
         {
-                zli2 = zli2 + A[m2*n2-k2];      //zliczanie pozostalych element贸w
+                zli2 = zli2 + A[m2*n2-k2];      //zliczanie pozostalych element體
                 n2--;
         }
         n2=n;
@@ -57,7 +61,7 @@ void obliczanie(int m, int n,int * A = new int[p], int * B = new int[p], int * B
 
         for(i=0;i<n-1;i++){
         if(B[i]>B2[i]){
-            cout<<"Kolumna"<<i+1<<endl; //wypisywanie indeks贸w kolumn
+            cout<<"Kolumna"<<i+1<<endl; //wypisywanie indeks體 kolumn
             plik<<"Kolumna"<<i+1<<endl;//wpisuje do pliku kolumny odpowiednie kolumny
 
 
@@ -65,10 +69,12 @@ void obliczanie(int m, int n,int * A = new int[p], int * B = new int[p], int * B
         }
 
     }
+
     plik.close();//zapyka plik kolumny
     delete[]A;
     delete[]B;
     delete[]B2;
+
 
 
     }
@@ -76,33 +82,35 @@ void obliczanie(int m, int n,int * A = new int[p], int * B = new int[p], int * B
 main()
 
 {
+        srand(time(NULL));
         ofstream zapis;
         zapis.open("testowany_macierz.txt");// tworzy i otwiera plik testowany_macierz
 
-    cout<<"Jesli chcesz sam wprowadzic wybierz 1"<<endl;
-    cout<<"Jesli chcesz zobaczyc przykladowe dzialanie 2"<<endl;    //wyb贸r miedzy dzialaniem testowym a dzialaniem na podstawie wlasnego macierza
-    cin>>wybor;
-    if(wybor == 1) //wybranie samodzielnego uzupe艂niania
-{
+
+
     cout<<"Podaj ilosc kolumn: "<<endl;
     cin>>m;
-    while(cin.fail()) // jesli warto艣膰 jest niepoprawna to wykonuje sie petla
+    while(cin.fail()) // jesli warto滄 jest niepoprawna to wykonuje sie petla
     {
        cout << "Wprowadz poprawna wartosc ponownie:";
         cin.clear();
         cin.ignore(100,'\n'); // ignoruje niepoprawne dane
         cin >> m; // nakazuje wprowadzic ponownie dane
     }
-                                     //Pobieranie rozmiar贸w macierza
+                                     //Pobieranie rozmiar體 macierza
     cout<<"Podaj ilosc wierszy: "<<endl;
     cin>>n;
-    while(cin.fail()) // jesli warto艣膰 jest niepoprawna to wykonuje sie petla
+    while(cin.fail()) // jesli warto滄 jest niepoprawna to wykonuje sie petla
     {
        cout << "Wprowadz poprawna wartosc ponownie:";
         cin.clear();
         cin.ignore(100,'\n'); // ignoruje niepoprawne dane
         cin >> n; // nakazuje wprowadzic ponownie dane
     }
+    cout<<"Jesli chcesz wprowadzic sam liczby do macierza wybierz 1"<<endl;
+    cout<<"Jesli chcesz wylosowac cyfry z przedzia硊 0-9 do macierza wybierz 2"<<endl;
+    cin>>wybor2;
+    if(wybor2 == 1){
     p = n * m;
     int * A = new int[p];
     int * B = new int[p];         //definiowanie tablic dynamicznych
@@ -115,7 +123,7 @@ main()
             cout<<"Podaj liczbe: ";
             cin >> A[i * m + j];            //Uzupelnianie tablicy A wartosciami z klawiatury
             zapis<<"["<<A[i * m + j]<<"]";//wpisuje do pliku elementy macierza
-            while(cin.fail()) // jesli warto艣膰 jest niepoprawna to wykonuje sie petla
+            while(cin.fail()) // jesli warto滄 jest niepoprawna to wykonuje sie petla
             {
                 cout << "Wprowadz poprawna wartosc ponownie:";
                 cin.clear();
@@ -126,41 +134,39 @@ main()
         }
         zapis<<endl;
     }
-    obliczanie(m,n,A,B,B2); //wywo艂anie funkcji obliczanie()
-
-
-}else if (wybor == 2) //wybranie przykladowego dzialania
-{
-
-
-
+    obliczanie(m,n,A,B,B2); //wywo砤nie funkcji obliczanie()
+    }
+    else if(wybor2 == 2)
+        {
+        auto begin = std::chrono::high_resolution_clock::now();
         p = n * m;
         int * A = new int[p];
         int * B = new int[p];         //definiowanie tablic dynamicznych
         int * B2 = new int[p];
-        n=4;
-        m=4;
-       A[0]=2;A[1]=4;A[2]=3;A[3]=1;A[4]=4;A[5]=7;A[6]=1;A[7]=3;A[8]=3;A[9]=0;A[10]=9;A[11]=0;A[12]=2;A[13]=5;A[14]=9;A[15]=9;//wartosci z polecenia
-
-       cout<<"Tak wyglada testowy macierz:"<<endl;
-
-
-    for(i = 0; i < n; i++)
-    {
+        for(i = 0; i < n; i++)
+        {
         for(j = 0; j < m; j++)
         {
-                                    //Wypisanie testowego macierza w formacie 2 wymiarowym
-            cout<<"["<<A[i * m + j]<<"]";
+
+            A[i * m + j] = rand()%10;
+            Sleep(1);
             zapis<<"["<<A[i * m + j]<<"]";
+
+
         }
         zapis<<endl;
-        cout<<endl;
+        }
+        obliczanie(m,n,A,B,B2); //wywo砤nie funkcji obliczanie()
+        auto end = std::chrono::high_resolution_clock::now();
+        auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+        czas=elapsed.count() * 1e-9;
+        cout<<"Czas trwania: "<<czas<<" sekund.";
+        }
 
-    }
-    obliczanie(m,n,A,B,B2);  //wywo艂anie funkcji obliczanie()
-}else{
-    cout<<"Podano zla liczbe podaj 1 lub 2!"; //wykluczenie dzialania programu gdy uzytkownik poda zla liczbe
-}
+
+
+
+
     zapis.close();//zamyka plik testowany_macierz
     return 0;
 }
