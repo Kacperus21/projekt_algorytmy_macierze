@@ -15,10 +15,12 @@ using namespace std;
 void obliczanie(int m, int n,int * A = new int[p], int * B = new int[p], int * B2 = new int[p])
 
     {
-
+        auto begin = std::chrono::high_resolution_clock::now();
 
     ofstream plik;
     plik.open("kolumny.txt");// tworzy i otwiera plik kolumny
+
+
 
     y=0;
     k=m;
@@ -32,7 +34,7 @@ void obliczanie(int m, int n,int * A = new int[p], int * B = new int[p], int * B
 
         for(j = k; j <= m ; j++)
         {
-            zli = zli + A[i+y*k];           //zliczanie sumy n pierwszych elementów n kolumny
+            zli = zli + A[i+y*k];           //zliczanie sumy n pierwszych elementï¿½w n kolumny
             y++;
         }
         B[q]=zli;
@@ -48,7 +50,7 @@ void obliczanie(int m, int n,int * A = new int[p], int * B = new int[p], int * B
 
             for(j = 0; j < k2-1 ; j++)
         {
-                zli2 = zli2 + A[m2*n2-k2];      //zliczanie pozostalych elementów
+                zli2 = zli2 + A[m2*n2-k2];      //zliczanie pozostalych elementï¿½w
                 n2--;
         }
         n2=n;
@@ -59,17 +61,24 @@ void obliczanie(int m, int n,int * A = new int[p], int * B = new int[p], int * B
     }
 
 
+
+
         for(i=0;i<n-1;i++){
         if(B[i]>B2[i]){
-            cout<<"Kolumna"<<i+1<<endl; //wypisywanie indeksów kolumn
+            cout<<"Kolumna"<<i+1<<endl; //wypisywanie indeksï¿½w kolumn
             plik<<"Kolumna"<<i+1<<endl;//wpisuje do pliku kolumny odpowiednie kolumny
 
 
 
         }
 
+
     }
 
+    auto end = std::chrono::high_resolution_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    czas=elapsed.count() * 1e-6;
+    cout<<"Czas trwania: "<<czas<<" milisekund."<<endl;
     plik.close();//zapyka plik kolumny
     delete[]A;
     delete[]B;
@@ -90,17 +99,17 @@ main()
 
     cout<<"Podaj ilosc kolumn: "<<endl;
     cin>>m;
-    while(cin.fail()) // jesli wartoœæ jest niepoprawna to wykonuje sie petla
+    while(cin.fail()) // jesli wartoï¿½ï¿½ jest niepoprawna to wykonuje sie petla
     {
        cout << "Wprowadz poprawna wartosc ponownie:";
         cin.clear();
         cin.ignore(100,'\n'); // ignoruje niepoprawne dane
         cin >> m; // nakazuje wprowadzic ponownie dane
     }
-                                     //Pobieranie rozmiarów macierza
+                                     //Pobieranie rozmiarï¿½w macierza
     cout<<"Podaj ilosc wierszy: "<<endl;
     cin>>n;
-    while(cin.fail()) // jesli wartoœæ jest niepoprawna to wykonuje sie petla
+    while(cin.fail()) // jesli wartoï¿½ï¿½ jest niepoprawna to wykonuje sie petla
     {
        cout << "Wprowadz poprawna wartosc ponownie:";
         cin.clear();
@@ -108,7 +117,7 @@ main()
         cin >> n; // nakazuje wprowadzic ponownie dane
     }
     cout<<"Jesli chcesz wprowadzic sam liczby do macierza wybierz 1"<<endl;
-    cout<<"Jesli chcesz wylosowac cyfry z przedzia³u 0-9 do macierza wybierz 2"<<endl;
+    cout<<"Jesli chcesz wylosowac cyfry z przedziaï¿½u 0-9 do macierza wybierz 2"<<endl;
     cin>>wybor2;
     if(wybor2 == 1){
     p = n * m;
@@ -123,7 +132,7 @@ main()
             cout<<"Podaj liczbe: ";
             cin >> A[i * m + j];            //Uzupelnianie tablicy A wartosciami z klawiatury
             zapis<<"["<<A[i * m + j]<<"]";//wpisuje do pliku elementy macierza
-            while(cin.fail()) // jesli wartoœæ jest niepoprawna to wykonuje sie petla
+            while(cin.fail()) // jesli wartoï¿½ï¿½ jest niepoprawna to wykonuje sie petla
             {
                 cout << "Wprowadz poprawna wartosc ponownie:";
                 cin.clear();
@@ -134,11 +143,11 @@ main()
         }
         zapis<<endl;
     }
-    obliczanie(m,n,A,B,B2); //wywo³anie funkcji obliczanie()
+    obliczanie(m,n,A,B,B2); //wywoï¿½anie funkcji obliczanie()
     }
     else if(wybor2 == 2)
         {
-        auto begin = std::chrono::high_resolution_clock::now();
+
         p = n * m;
         int * A = new int[p];
         int * B = new int[p];         //definiowanie tablic dynamicznych
@@ -149,18 +158,14 @@ main()
         {
 
             A[i * m + j] = rand()%10;
-            Sleep(1);
             zapis<<"["<<A[i * m + j]<<"]";
 
 
         }
         zapis<<endl;
         }
-        obliczanie(m,n,A,B,B2); //wywo³anie funkcji obliczanie()
-        auto end = std::chrono::high_resolution_clock::now();
-        auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
-        czas=elapsed.count() * 1e-9;
-        cout<<"Czas trwania: "<<czas<<" sekund.";
+        obliczanie(m,n,A,B,B2); //wywoï¿½anie funkcji obliczanie()
+
         }
 
 
